@@ -1,5 +1,5 @@
 School Principals’ Transformational Leadership and Student Academic Achievement in Chinese Middle Schools — Systematic Review & Meta-analysis
-DOI（占位）：https://doi.org/10.5281/zenodo.TBD
+DOI：https://zenodo.org/badge/DOI/10.5281/zenodo.16918043.svg
 Docs 许可：CC BY 4.0（https://creativecommons.org/licenses/by/4.0/）
 Code 许可：MIT（参见仓库 LICENSE 文件）
 Author：LUO XI（University of Malaya）
