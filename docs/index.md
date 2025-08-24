@@ -1,25 +1,52 @@
+---
 title: Transformational Leadership & Student Achievement (China, Middle Schools)
-description: PRISMA protocol, data templates, and meta-analysis workflow
-theme: jekyll-theme-cayman
-School Principals’ Transformational Leadership and Student Academic Achievement in Chinese Middle Schools — Systematic Review & Meta-analysis
-DOI: https://doi.org/10.5281/zenodo.TBD
-Author: LUO XI (University of Malaya) · Protocol: v1.0 · Date: July 12, 2025
-About
-This site hosts the PRISMA-compliant protocol and resources for a systematic review and meta-analysis on the link between principals’ transformational leadership and student academic achievement in Chinese middle schools.
-• RQ1: Association between TL and achievement
-• RQ2: Moderation by region, instrument (MLQ/TLQ/other), publication year, and sample level (student/class/school)
-Downloads
-Protocol (EN, PDF, final): Protocol_v1.0_PRISMA_EN_FINAL_2025-07-12.pdf
-Protocol (EN, DOCX, final): Protocol_v1.0_PRISMA_EN_FINAL_2025-07-12.docx
-Protocol (Bilingual CN–EN, DOCX, final): Protocol_v1.0_PRISMA_Bilingual_CN-EN_FINAL_2025-07-12.docx
-Repository
-• Code: ../code/ (metafor, clubSandwich)
-• Data: ../data_raw/ (search exports), ../data_clean/ (effects.csv, RoB)
-• Figures & Tables: ../figures/, ../tables/
-Site URL
-https://cctwaisi.github.io/TL-Achievement-China/
-Cite
-Luo, X. (2025). Protocol v1.0: School Principals’ Transformational Leadership and Student Academic Achievement in Chinese Middle Schools — A Systematic Review and Meta-analysis (Version 1.0) [Protocol]. University of Malaya. https://doi.org/10.5281/zenodo.TBD
-中文说明
-• 若需中文文档，请在仓库 docs/ 放置中文或双语 DOCX/PDF 并在此处添加链接。
-• 网站启用：Settings → Pages → Branch: main，Folder: /docs。
+description: PRISMA protocol, data templates, and meta-analysis workflow for the link between principals’ transformational leadership and student academic achievement in Chinese middle schools.
+layout: default
+---
+
+# School Principals’ Transformational Leadership and Student Academic Achievement in Chinese Middle Schools
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.TBD.svg)](https://doi.org/10.5281/zenodo.TBD)
+
+**Author:** LUO XI (University of Malaya)  
+**Protocol:** v1.0 · **Date:** July 12, 2025
+
+This site hosts the PRISMA-compliant protocol and resources for a systematic review and meta-analysis on the association between principals’ transformational leadership and student academic achievement in Chinese middle schools.
+
+---
+
+## Research Questions
+- **RQ1.** Is principals’ transformational leadership positively associated with student academic achievement?
+- **RQ2.** Is the association moderated by region, instrument (MLQ/TLQ/other), publication year, and **sample level** (student/class/school)?
+
+---
+
+## Downloads
+- **Protocol (EN, PDF):** [Protocol_v1.0_PRISMA_EN_FINAL_2025-07-12.pdf](./Protocol_v1.0_PRISMA_EN_FINAL_2025-07-12.pdf)
+- **Protocol (Bilingual CN–EN, DOCX):** [Protocol_v1.0_PRISMA_Bilingual_CN-EN_FINAL_2025-07-12.docx](./Protocol_v1.0_PRISMA_Bilingual_CN-EN_FINAL_2025-07-12.docx)
+
+> 如果你需要中文 PDF，我可以内嵌字体后再提供一个中文版 PDF 供下载。
+
+---
+
+## Repository Map
+- **Code:** [`/code`](../code) （metafor、clubSandwich 等 R/Python 脚本）
+- **Raw data:** [`/data_raw`](../data_raw) （数据库导出的 RIS/CSV）
+- **Clean data:** [`/data_clean`](../data_clean) （合并/去重、筛选表、效应量表）
+- **Docs:** [`/docs`](.) （协议与网页）
+
+---
+
+## Figures & Tables (auto-generated)
+发布后将出现在：
+- `figures/forest_overall.png` · `figures/funnel.png`  
+- `tables/effect_size_summary.csv` · `tables/moderators.csv`
+
+---
+
+## How to Cite
+Luo, X. (2025). *School Principals’ Transformational Leadership and Student Academic Achievement in Chinese Middle Schools—A Systematic Review and Meta-analysis (Version 1.0) [Protocol].* University of Malaya. https://doi.org/10.5281/zenodo.TBD
+
+---
+
+**Build note:** GitHub Pages → Source: GitHub Actions · Branch: `main` · Folder: `/docs`
