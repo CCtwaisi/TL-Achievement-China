@@ -1,0 +1,29 @@
+name: Merge & Deduplicate Bibliography
+on:
+  push:
+    paths:
+      - 'data_raw/**'
+      - 'code/*.py'
+      - '.github/workflows/merge_bib.yml'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.11' }
+      - run: pip install pandas rispy rapidfuzz
+      - run: python code/merge_bib.py
+      - run: python code/dedupe_bib.py
+      - name: Commit outputs
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data_clean/*.csv || true
+          git commit -m "chore: update combined/master bibliography" || echo "no changes"
+          git push
