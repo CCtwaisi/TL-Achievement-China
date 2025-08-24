@@ -1,4 +1,4 @@
-name: Merge & Deduplicate Bibliography
+name: SRMA - Ingest & Deduplicate Citations
 
 on:
   push:
