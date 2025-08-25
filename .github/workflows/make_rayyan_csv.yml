@@ -1,39 +1,74 @@
 name: Make Rayyan CSV
+
 on:
   workflow_dispatch:
   push:
     paths:
-      - 'data_clean/TitleAbs_Screening_AUTO.xlsx'
-      - 'code/07_autoscreen.py'
+      - 'data_clean/**'
+      - '.github/workflows/make_rayyan_csv.yml'
+
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions: { contents: write }
+    permissions:
+      contents: write
+
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-python@v5
-        with: { python-version: '3.11' }
-      - run: |
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -q pandas openpyxl
+
+      - name: Build clean CSV for Rayyan
+        run: |
           python - <<'PY'
-          import pandas as pd, re, os
-          src = 'data_clean/TitleAbs_Screening_AUTO.xlsx'
-          df = pd.read_excel(src)
+          import pandas as pd, re, os, sys
+          candidates = [
+            'data_clean/TitleAbs_Screening_AUTO.xlsx',
+            'data_clean/TitleAbs_Screening.xlsx',
+            'data_clean/TitleAbs_Screening_AUTO.csv',
+            'data_clean/master_refs_raw.csv'
+          ]
+          src = next((p for p in candidates if os.path.exists(p)), None)
+          if not src:
+            print("ERROR: no input file found. Tried:", candidates, file=sys.stderr)
+            sys.exit(1)
+
+          print("Reading:", src)
+          if src.endswith('.xlsx'):
+            df = pd.read_excel(src)
+          else:
+            df = pd.read_csv(src)
+
           keep = ['study_id','title','abstract','authors','year']
-          df = df[[c for c in keep if c in df.columns]].copy()
+          cols = [c for c in keep if c in df.columns]
+          if not cols:
+            print("ERROR: none of expected columns present:", keep, file=sys.stderr)
+            print("Columns in file:", df.columns.tolist(), file=sys.stderr)
+            sys.exit(1)
+
+          df = df.loc[:, cols].copy()
+
           def clean(s):
               if pd.isna(s): return ''
-              s = str(s)
-              s = s.replace('\r',' ').replace('\n',' ').replace('\t',' ')
-              s = re.sub(' +',' ',s).strip()
-              return s[:50000]  # 防止极端超长
+              s = str(s).replace('\r',' ').replace('\n',' ').replace('\t',' ')
+              return re.sub(' +',' ', s).strip()[:50000]
+
           for c in df.columns:
               df[c] = df[c].map(clean)
+
           os.makedirs('data_clean', exist_ok=True)
           out = 'data_clean/rayyan_upload_v1.csv'
           df.to_csv(out, index=False, encoding='utf-8')
-          print('Wrote', out, df.shape)
+          print("OK Wrote", out, df.shape)
           PY
-      - run: |
+
+      - name: Commit CSV
+        run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data_clean/rayyan_upload_v1.csv
