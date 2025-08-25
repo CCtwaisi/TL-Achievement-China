@@ -1,0 +1,41 @@
+name: Make Rayyan CSV
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'data_clean/TitleAbs_Screening_AUTO.xlsx'
+      - 'code/07_autoscreen.py'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions: { contents: write }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.11' }
+      - run: |
+          python - <<'PY'
+          import pandas as pd, re, os
+          src = 'data_clean/TitleAbs_Screening_AUTO.xlsx'
+          df = pd.read_excel(src)
+          keep = ['study_id','title','abstract','authors','year']
+          df = df[[c for c in keep if c in df.columns]].copy()
+          def clean(s):
+              if pd.isna(s): return ''
+              s = str(s)
+              s = s.replace('\r',' ').replace('\n',' ').replace('\t',' ')
+              s = re.sub(' +',' ',s).strip()
+              return s[:50000]  # 防止极端超长
+          for c in df.columns:
+              df[c] = df[c].map(clean)
+          os.makedirs('data_clean', exist_ok=True)
+          out = 'data_clean/rayyan_upload_v1.csv'
+          df.to_csv(out, index=False, encoding='utf-8')
+          print('Wrote', out, df.shape)
+          PY
+      - run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data_clean/rayyan_upload_v1.csv
+          git commit -m "make: rayyan_upload_v1.csv" || echo "no changes"
+          git push
